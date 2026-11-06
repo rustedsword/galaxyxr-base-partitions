@@ -1,0 +1,5 @@
+lib/platform.sh usr/lib/galaxyxr-base-partitions-vendor
+libexec/mount-vendor usr/libexec/galaxyxr-base-partitions-vendor
+systemd/galaxyxr-base-partitions-vendor.service usr/lib/systemd/system
+systemd/run-platform-vendor.mount usr/lib/systemd/system
+udev/54-galaxyxr-base-partitions-vendor.rules usr/lib/udev/rules.d

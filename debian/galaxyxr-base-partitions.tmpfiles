@@ -1,0 +1,2 @@
+# The Samsung kernel reads its factory calibration from /efs, which is sec_efs
+L /efs - - - - /run/platform/sec_efs

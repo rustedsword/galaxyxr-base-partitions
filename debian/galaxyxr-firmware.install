@@ -1,0 +1,2 @@
+libexec/wlan-mac usr/libexec/galaxyxr-firmware
+systemd/galaxyxr-firmware.service usr/lib/systemd/system

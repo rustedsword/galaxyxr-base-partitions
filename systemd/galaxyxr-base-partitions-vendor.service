@@ -1,0 +1,20 @@
+[Unit]
+Description=Galaxy XR vendor partition on /run/platform
+Documentation=file:///usr/share/doc/galaxyxr-base-partitions-vendor/README.md
+DefaultDependencies=no
+Conflicts=shutdown.target
+Before=sysinit.target shutdown.target
+# Before anything loads modules: firmware is linked into this partition. galaxyxr-modules is
+# the 5.10 kernel's second stage, which loads modules before udev too.
+Before=systemd-udevd.service systemd-udev-trigger.service systemd-modules-load.service galaxyxr-modules.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# udev waits for this: a hung partition or mount must not hold the boot forever
+TimeoutStartSec=30s
+TimeoutStopSec=5s
+ExecStart=/usr/libexec/galaxyxr-base-partitions-vendor/mount-vendor
+
+[Install]
+WantedBy=sysinit.target

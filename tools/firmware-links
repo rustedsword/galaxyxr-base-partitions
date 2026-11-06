@@ -1,0 +1,54 @@
+#!/bin/sh
+# Prints debian/galaxyxr-firmware.links: for every firmware file in apnhlos's image/ and
+# vendor's firmware/, a link of the same name in /usr/lib/firmware/updates into /run/platform.
+# apnhlos wins a name both have, as in Android. Vendor's absolute links are followed into
+# /run/platform/vendor; those that leave vendor (for /data or persist, which Android fills)
+# are left out. wlan_mac.bin, which galaxyxr-firmware.service makes from efs at boot, links
+# into /run/galaxyxr-firmware instead.
+#
+#   tools/firmware-links [APNHLOS VENDOR] > debian/galaxyxr-firmware.links
+#
+# APNHLOS and VENDOR are where the partitions are mounted, /run/platform/apnhlos and
+# /run/platform/vendor by default; apnhlos with shortname=lower, as Android mounts it.
+# Reading vendor's build.prop for the header needs root.
+set -e
+
+apnhlos=${1:-/run/platform/apnhlos}
+vendor=${2:-/run/platform/vendor}
+[ -d "$apnhlos/image" ] && [ -d "$vendor/firmware" ] || {
+    echo "usage: ${0##*/} [APNHLOS VENDOR]: no $apnhlos/image or $vendor/firmware" >&2
+    exit 1
+}
+
+names() {
+    (cd "$1" && find . -mindepth 1 \( -type f -o -type l \) | sed 's|^\./||' | LC_ALL=C sort)
+}
+
+fingerprint=$(sed -n 's/^ro\.vendor\.build\.fingerprint=//p' "$vendor/build.prop" 2> /dev/null) || :
+echo "# Made by tools/firmware-links from ${fingerprint:-an unknown vendor}"
+{
+    echo "wlan/qca_cld/kiwi_v2/wlan_mac.bin run/galaxyxr-firmware/wlan/qca_cld/kiwi_v2/wlan_mac.bin"
+    names "$apnhlos/image" | while read -r name; do
+        echo "$name run/platform/apnhlos/image/$name"
+    done
+    names "$vendor/firmware" | while read -r name; do
+        target=run/platform/vendor/firmware/$name
+        if [ -L "$vendor/firmware/$name" ]; then
+            link=$(readlink "$vendor/firmware/$name")
+            case $link in
+                /vendor/*)
+                    if [ ! -e "$vendor/${link#/vendor/}" ]; then
+                        echo "left out: $name -> $link, which vendor doesn't have" >&2
+                        continue
+                    fi
+                    target=run/platform/vendor/${link#/vendor/}
+                    ;;
+                /*)
+                    echo "left out: $name -> $link" >&2
+                    continue
+                    ;;
+            esac
+        fi
+        echo "$name $target"
+    done
+} | LC_ALL=C sort -s -u -k 1,1 | awk '{ print $2 " usr/lib/firmware/updates/" $1 }'

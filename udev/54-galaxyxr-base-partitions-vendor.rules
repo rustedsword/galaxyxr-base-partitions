@@ -1,0 +1,3 @@
+# Allow coldplug of vendor mapped before udev starts.
+# Keep the alias on DISK_RO events too: 55-dm.rules skips them and would drop it.
+SUBSYSTEM=="block", KERNEL=="dm-[0-9]*", ACTION!="remove", ATTR{dm/name}=="vendor", ENV{DM_UDEV_PRIMARY_SOURCE_FLAG}="1", SYMLINK+="mapper/vendor"

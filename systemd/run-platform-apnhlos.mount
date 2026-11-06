@@ -1,0 +1,11 @@
+[Unit]
+Description=Galaxy XR apnhlos partition (Qualcomm firmware), read-only
+Documentation=file:///usr/share/doc/galaxyxr-base-partitions/README.md
+# The service mounts it before udev; this unit is for systemd and for mounting it again
+After=galaxyxr-base-partitions.service
+
+[Mount]
+What=/dev/disk/by-partlabel/apnhlos
+Where=/run/platform/apnhlos
+Type=vfat
+Options=ro,nosuid,nodev,shortname=lower

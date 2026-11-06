@@ -1,0 +1,12 @@
+[Unit]
+Description=Galaxy XR vendor partition (Android vendor from super), read-only
+Documentation=file:///usr/share/doc/galaxyxr-base-partitions-vendor/README.md
+# The service maps and mounts it before udev; this unit is for systemd and for mounting it again
+Wants=galaxyxr-base-partitions-vendor.service
+After=galaxyxr-base-partitions-vendor.service
+
+[Mount]
+What=/dev/mapper/vendor
+Where=/run/platform/vendor
+Type=ext4
+Options=ro,nosuid,nodev,noload,errors=remount-ro

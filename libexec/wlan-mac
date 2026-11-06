@@ -1,0 +1,18 @@
+#!/bin/sh
+# Makes wlan_mac.bin, qcacld's Wi-Fi MAC address, from efs's wifi/.mac.info
+set -e
+
+input=${1:-/run/platform/efs/wifi/.mac.info}
+output=${2:-/run/galaxyxr-firmware/wlan/qca_cld/kiwi_v2/wlan_mac.bin}
+
+mac=$(tr -d : < "$input")
+case $mac in
+    *[!0-9A-Fa-f]*) mac= ;;
+esac
+if [ ${#mac} -ne 12 ]; then
+    echo "${0##*/}: no MAC address in $input" >&2
+    exit 1
+fi
+mkdir -p "$(dirname -- "$output")"
+printf 'Intf0MacAddress=%s\nEND\n' "$mac" > "$output.tmp"
+mv -f "$output.tmp" "$output"

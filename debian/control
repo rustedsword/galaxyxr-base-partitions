@@ -1,0 +1,29 @@
+Source: galaxyxr-base-partitions
+Section: admin
+Priority: optional
+Maintainer: Stanislav Aleksandrov <lightofmysoul@gmail.com>
+Build-Depends: debhelper-compat (= 13)
+Rules-Requires-Root: no
+Standards-Version: 4.7.4
+Homepage: https://github.com/rustedsword/galaxyxr-base-partitions
+Vcs-Browser: https://github.com/rustedsword/galaxyxr-base-partitions
+Vcs-Git: https://github.com/rustedsword/galaxyxr-base-partitions.git
+
+Package: galaxyxr-base-partitions
+Architecture: all
+Depends: mount, ${misc:Depends}
+Description: Galaxy XR platform partitions on /run/platform
+ Mounts apnhlos, dsp, efs, persist and sec_efs read-only before modules load.
+
+Package: galaxyxr-base-partitions-vendor
+Architecture: all
+Depends: dmsetup, galaxyxr-mini-tools (>= 2~), kmod, mount, ${misc:Depends}
+Description: Galaxy XR vendor partition on /run/platform
+ Maps vendor out of Android's super and mounts it read-only before modules load.
+
+Package: galaxyxr-firmware
+Architecture: all
+Depends: galaxyxr-base-partitions, galaxyxr-base-partitions-vendor, ${misc:Depends}
+Description: Galaxy XR firmware, linked into its partitions
+ Links apnhlos's and vendor's firmware into /usr/lib/firmware/updates and makes
+ wlan_mac.bin from efs.

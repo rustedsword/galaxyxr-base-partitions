@@ -1,0 +1,20 @@
+#!/bin/sh
+# Maps vendor out of Android's super partition and mounts it read-only on /run/platform/vendor
+
+. /usr/lib/galaxyxr-base-partitions-vendor/platform.sh
+
+# Sets dm to the kernel's node of the device-mapper device named vendor; whoever mapped it
+# may not have made /dev/mapper/vendor, or left an old one
+vendor_dm() {
+    dm=$(grep -l -x -F vendor /sys/block/dm-*/dm/name 2> /dev/null | head -n 1)
+    [ -n "$dm" ] || return 1
+    dm=${dm%/dm/name}
+    dm=/dev/${dm##*/}
+}
+
+# An initramfs or an earlier run may have mapped it already
+if ! vendor_dm; then
+    [ -e /dev/mapper/control ] || modprobe -q dm_mod
+    platform_part super && map_super "$device" vendor && vendor_dm || exit 1
+fi
+platform_mount vendor "$dm" ext4 ro,nosuid,nodev,noload,errors=remount-ro

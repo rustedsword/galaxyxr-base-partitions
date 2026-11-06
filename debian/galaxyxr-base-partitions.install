@@ -1,0 +1,8 @@
+lib/platform.sh usr/lib/galaxyxr-base-partitions
+libexec/mount-partitions usr/libexec/galaxyxr-base-partitions
+systemd/galaxyxr-base-partitions.service usr/lib/systemd/system
+systemd/run-platform-apnhlos.mount usr/lib/systemd/system
+systemd/run-platform-dsp.mount usr/lib/systemd/system
+systemd/run-platform-efs.mount usr/lib/systemd/system
+systemd/run-platform-persist.mount usr/lib/systemd/system
+systemd/run-platform-sec_efs.mount usr/lib/systemd/system

@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+# Only the services: debhelper restarts every unit after an upgrade, and restarting an
+# active .mount unmounts it
+override_dh_installsystemd-indep:
+	dh_installsystemd --no-restart-after-upgrade --no-stop-on-upgrade -pgalaxyxr-base-partitions \
+		galaxyxr-base-partitions.service
+	dh_installsystemd --no-restart-after-upgrade --no-stop-on-upgrade -pgalaxyxr-base-partitions-vendor \
+		galaxyxr-base-partitions-vendor.service
+	dh_installsystemd --no-restart-after-upgrade --no-stop-on-upgrade -pgalaxyxr-firmware \
+		galaxyxr-firmware.service

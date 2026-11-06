@@ -1,0 +1,15 @@
+#!/bin/sh
+# Mounts apnhlos, dsp, efs, persist and sec_efs read-only on /run/platform/NAME
+
+. /usr/lib/galaxyxr-base-partitions/platform.sh
+
+status=0
+for name in apnhlos dsp efs persist sec_efs; do
+    if [ "$name" = apnhlos ]; then
+        type=vfat options=ro,nosuid,nodev,shortname=lower
+    else
+        type=ext4 options=ro,nosuid,nodev,noload,errors=remount-ro
+    fi
+    platform_part "$name" && platform_mount "$name" "$device" "$type" "$options" || status=1
+done
+exit $status

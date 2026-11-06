@@ -1,0 +1,22 @@
+[Unit]
+Description=Galaxy XR firmware made from its partitions: wlan_mac.bin
+Documentation=file:///usr/share/doc/galaxyxr-firmware/README.md
+DefaultDependencies=no
+Conflicts=shutdown.target
+After=galaxyxr-base-partitions.service
+Before=sysinit.target shutdown.target
+# Before anything loads modules: wlan reads wlan_mac.bin when it loads. galaxyxr-modules is the
+# 5.10 kernel's second stage, which loads modules before udev too. A wlan loaded in an initramfs
+# would need the file there: embedded when the image is built, or made by the initramfs.
+Before=systemd-udevd.service systemd-udev-trigger.service systemd-modules-load.service galaxyxr-modules.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# udev waits for this: a hang must not hold the boot forever
+TimeoutStartSec=30s
+TimeoutStopSec=5s
+ExecStart=/usr/libexec/galaxyxr-firmware/wlan-mac
+
+[Install]
+WantedBy=sysinit.target
