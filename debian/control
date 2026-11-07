@@ -25,5 +25,5 @@ Package: galaxyxr-firmware
 Architecture: all
 Depends: galaxyxr-base-partitions, galaxyxr-base-partitions-vendor, ${misc:Depends}
 Description: Galaxy XR firmware, linked into its partitions
- Links apnhlos's and vendor's firmware into /usr/lib/firmware/updates and makes
+ Links apnhlos's and vendor's firmware into /usr/lib/firmware and makes
  wlan_mac.bin from efs.

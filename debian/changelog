@@ -1,3 +1,11 @@
+galaxyxr-base-partitions (2~26.10.1) stonking; urgency=medium
+
+  * galaxyxr-firmware links the firmware into /usr/lib/firmware instead of
+    /usr/lib/firmware/updates, so userspace that only looks there, such as
+    pd-mapper for its .jsn maps, finds it too.
+
+ -- Stanislav Aleksandrov <lightofmysoul@gmail.com>  Sat, 07 Nov 2026 09:21:09 +0000
+
 galaxyxr-base-partitions (1~26.10.1) stonking; urgency=medium
 
   * Initial release.

@@ -11,9 +11,10 @@ Everything is mounted read-only, flat under `/run/platform`.
   partition with `map_super` from galaxyxr-mini-tools and mounts it on
   `/run/platform/vendor`.
 - `galaxyxr-firmware` links every firmware file of apnhlos (`image/`) and
-  vendor (`firmware/`) into `/usr/lib/firmware/updates`, where the kernel
-  looks first. `galaxyxr-firmware.service` makes `wlan_mac.bin`, wlan's MAC
-  address, from efs into `/run/galaxyxr-firmware`, where its link points.
+  vendor (`firmware/`) into `/usr/lib/firmware`, where the kernel and
+  userspace such as pd-mapper look for it. `galaxyxr-firmware.service` makes
+  `wlan_mac.bin`, wlan's MAC address, from efs into `/run/galaxyxr-firmware`,
+  where its link points.
 
 ## Before any module loads
 
@@ -46,3 +47,6 @@ two arguments name other mount points of the same partitions. apnhlos wins
 a name both partitions have, as in Android. Links of vendor's that lead out
 of it, into `/data` or persist, are left out. `wlan_mac.bin` always links
 into `/run/galaxyxr-firmware`.
+
+The links share `/usr/lib/firmware` with linux-firmware. No name is in both,
+and dpkg would refuse one that is.

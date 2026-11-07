@@ -1,6 +1,6 @@
 #!/bin/sh
 # Prints debian/galaxyxr-firmware.links: for every firmware file in apnhlos's image/ and
-# vendor's firmware/, a link of the same name in /usr/lib/firmware/updates into /run/platform.
+# vendor's firmware/, a link of the same name in /usr/lib/firmware into /run/platform.
 # apnhlos wins a name both have, as in Android. Vendor's absolute links are followed into
 # /run/platform/vendor; those that leave vendor (for /data or persist, which Android fills)
 # are left out. wlan_mac.bin, which galaxyxr-firmware.service makes from efs at boot, links
@@ -51,4 +51,4 @@ echo "# Made by tools/firmware-links from ${fingerprint:-an unknown vendor}"
         fi
         echo "$name $target"
     done
-} | LC_ALL=C sort -s -u -k 1,1 | awk '{ print $2 " usr/lib/firmware/updates/" $1 }'
+} | LC_ALL=C sort -s -u -k 1,1 | awk '{ print $2 " usr/lib/firmware/" $1 }'
