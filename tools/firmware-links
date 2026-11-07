@@ -4,7 +4,8 @@
 # apnhlos wins a name both have, as in Android. Vendor's absolute links are followed into
 # /run/platform/vendor; those that leave vendor (for /data or persist, which Android fills)
 # are left out. wlan_mac.bin, which galaxyxr-firmware.service makes from efs at boot, links
-# into /run/galaxyxr-firmware instead.
+# into /run/galaxyxr-firmware instead. Files no driver requests on a retail unit (REV07 and
+# later) are left out too: firmware of other chips, test images and prototype boards' files.
 #
 #   tools/firmware-links [APNHLOS VENDOR] > debian/galaxyxr-firmware.links
 #
@@ -21,7 +22,19 @@ vendor=${2:-/run/platform/vendor}
 }
 
 names() {
-    (cd "$1" && find . -mindepth 1 \( -type f -o -type l \) | sed 's|^\./||' | LC_ALL=C sort)
+    (cd "$1" && find . -mindepth 1 \( -type f -o -type l \) | sed 's|^\./||' | LC_ALL=C sort) |
+        while read -r name; do
+            case $name in
+                # Other chips
+                a620_zap.* | a621_gmu.bin | a650_sqe.fw | CAMERA_ICP_*.elf | vpu20_* | vpu30_*) ;;
+                # Test images; the DT boots the ICP through PIL, from CAMERA_ICP.mdt
+                CAMERA_ICP.elf | *_unsigned.mbn) ;;
+                # Only prototype boards ask for these: amps without the tw or wf part name,
+                # s2mm006_fw.bin instead of dk4_s2mm006_fw.bin, kiwi's .u20 board files
+                cs35l45-dsp1-* | s2mm006_fw.bin | kiwi/*.u20) ;;
+                *) echo "$name" ;;
+            esac
+        done
 }
 
 fingerprint=$(sed -n 's/^ro\.vendor\.build\.fingerprint=//p' "$vendor/build.prop" 2> /dev/null) || :

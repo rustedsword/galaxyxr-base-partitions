@@ -48,5 +48,8 @@ a name both partitions have, as in Android. Links of vendor's that lead out
 of it, into `/data` or persist, are left out. `wlan_mac.bin` always links
 into `/run/galaxyxr-firmware`.
 
+Files no driver requests on a retail unit (REV07 and later) are left out too:
+firmware of other chips, test images and prototype boards' files.
+
 The links share `/usr/lib/firmware` with linux-firmware. No name is in both,
 and dpkg would refuse one that is.
