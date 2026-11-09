@@ -14,7 +14,9 @@ Everything is mounted read-only, flat under `/run/platform`.
   vendor (`firmware/`) into `/usr/lib/firmware`, where the kernel and
   userspace such as pd-mapper look for it. `galaxyxr-firmware.service` makes
   `wlan_mac.bin`, wlan's MAC address, from efs into `/run/galaxyxr-firmware`,
-  where its link points.
+  where its link points. Mainline kernels ask for the ADSP and CDSP firmware
+  as `qcom/halliday/samsung/xrvst2/adsp.mbn` and `cdsp.mbn`: these link to
+  the split `.mdt`, next to links to its `.bNN` segments.
 
 ## Before any module loads
 

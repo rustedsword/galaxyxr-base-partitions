@@ -1,3 +1,11 @@
+galaxyxr-base-partitions (3~26.10.1) stonking; urgency=medium
+
+  * galaxyxr-firmware links the ADSP and CDSP firmware where mainline kernels
+    ask for it, qcom/halliday/samsung/xrvst2/adsp.mbn and cdsp.mbn, to the
+    split .mdt, next to links to its .bNN segments.
+
+ -- Stanislav Aleksandrov <lightofmysoul@gmail.com>  Mon, 09 Nov 2026 10:59:28 +0000
+
 galaxyxr-base-partitions (2~26.10.1) stonking; urgency=medium
 
   * galaxyxr-firmware links the firmware into /usr/lib/firmware instead of

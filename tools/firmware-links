@@ -6,6 +6,9 @@
 # are left out. wlan_mac.bin, which galaxyxr-firmware.service makes from efs at boot, links
 # into /run/galaxyxr-firmware instead. Files no driver requests on a retail unit (REV07 and
 # later) are left out too: firmware of other chips, test images and prototype boards' files.
+# Mainline kernels ask for the ADSP and CDSP firmware as qcom/halliday/samsung/xrvst2/
+# adsp.mbn and cdsp.mbn: these link to the split .mdt, and the .bNN segments, which the
+# kernel loads by name from the same directory, get links there too.
 #
 #   tools/firmware-links [APNHLOS VENDOR] > debian/galaxyxr-firmware.links
 #
@@ -43,6 +46,13 @@ echo "# Made by tools/firmware-links from ${fingerprint:-an unknown vendor}"
     echo "wlan/qca_cld/kiwi_v2/wlan_mac.bin run/galaxyxr-firmware/wlan/qca_cld/kiwi_v2/wlan_mac.bin"
     names "$apnhlos/image" | while read -r name; do
         echo "$name run/platform/apnhlos/image/$name"
+    done
+    for dsp in adsp cdsp; do
+        [ -f "$apnhlos/image/$dsp.mdt" ] || continue
+        echo "qcom/halliday/samsung/xrvst2/$dsp.mbn run/platform/apnhlos/image/$dsp.mdt"
+        names "$apnhlos/image" | grep "^$dsp\.b[0-9][0-9]\$" | while read -r name; do
+            echo "qcom/halliday/samsung/xrvst2/$name run/platform/apnhlos/image/$name"
+        done
     done
     names "$vendor/firmware" | while read -r name; do
         target=run/platform/vendor/firmware/$name
