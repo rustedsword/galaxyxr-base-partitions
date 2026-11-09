@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+kiwi=${1:-/run/platform/vendor/firmware/kiwi}
+mac=${2:-/run/platform/efs/wifi/.mac.info}
+output=${3:-/run/galaxyxr-firmware/ath12k/WCN7850/hw2.0/board-2.bin}
+
+mkdir -p "$(dirname -- "$output")"
+bdf_mac "$kiwi/bdwlan.elf" "$kiwi/regdb.bin" "$mac" "$output.tmp"
+mv -f "$output.tmp" "$output"

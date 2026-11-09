@@ -316,6 +316,7 @@ run/platform/apnhlos/image/sshdcpapp.b07 usr/lib/firmware/sshdcpapp.b07
 run/platform/apnhlos/image/sshdcpapp.b08 usr/lib/firmware/sshdcpapp.b08
 run/platform/apnhlos/image/sshdcpapp.mdt usr/lib/firmware/sshdcpapp.mdt
 run/platform/vendor/firmware/touchkey_abov/abov_tk_moohan.bin usr/lib/firmware/touchkey_abov/abov_tk_moohan.bin
+run/galaxyxr-firmware/ath12k/WCN7850/hw2.0/board-2.bin usr/lib/firmware/updates/ath12k/WCN7850/hw2.0/board-2.bin
 run/platform/vendor/firmware/vpu33_4v.mbn usr/lib/firmware/vpu33_4v.mbn
 run/platform/apnhlos/image/widevine.mbn usr/lib/firmware/widevine.mbn
 run/platform/vendor/firmware/wlan-connection-roaming-backup.ini usr/lib/firmware/wlan-connection-roaming-backup.ini

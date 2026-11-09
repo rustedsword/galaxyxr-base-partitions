@@ -1,3 +1,12 @@
+galaxyxr-base-partitions (4~26.10.1) stonking; urgency=medium
+
+  * galaxyxr-firmware makes mainline's ath12k board-2.bin for the WCN7850
+    with bdf_mac, from vendor's board data and regdb and efs's MAC address,
+    into /run/galaxyxr-firmware, and links it from
+    /usr/lib/firmware/updates/ath12k/WCN7850/hw2.0, ahead of linux-firmware's.
+
+ -- Stanislav Aleksandrov <lightofmysoul@gmail.com>  Mon, 09 Nov 2026 13:41:52 +0000
+
 galaxyxr-base-partitions (3~26.10.1) stonking; urgency=medium
 
   * galaxyxr-firmware links the ADSP and CDSP firmware where mainline kernels

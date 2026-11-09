@@ -3,9 +3,10 @@
 # vendor's firmware/, a link of the same name in /usr/lib/firmware into /run/platform.
 # apnhlos wins a name both have, as in Android. Vendor's absolute links are followed into
 # /run/platform/vendor; those that leave vendor (for /data or persist, which Android fills)
-# are left out. wlan_mac.bin, which galaxyxr-firmware.service makes from efs at boot, links
-# into /run/galaxyxr-firmware instead. Files no driver requests on a retail unit (REV07 and
-# later) are left out too: firmware of other chips, test images and prototype boards' files.
+# are left out. wlan_mac.bin and ath12k's board-2.bin, which galaxyxr-firmware.service makes at
+# boot, link into /run/galaxyxr-firmware instead; board-2.bin from updates/, ahead of
+# linux-firmware's. Files no driver requests on a retail unit (REV07 and later) are left out
+# too: firmware of other chips, test images and prototype boards' files.
 # Mainline kernels ask for the ADSP and CDSP firmware as qcom/halliday/samsung/xrvst2/
 # adsp.mbn and cdsp.mbn: these link to the split .mdt, and the .bNN segments, which the
 # kernel loads by name from the same directory, get links there too.
@@ -44,6 +45,7 @@ fingerprint=$(sed -n 's/^ro\.vendor\.build\.fingerprint=//p' "$vendor/build.prop
 echo "# Made by tools/firmware-links from ${fingerprint:-an unknown vendor}"
 {
     echo "wlan/qca_cld/kiwi_v2/wlan_mac.bin run/galaxyxr-firmware/wlan/qca_cld/kiwi_v2/wlan_mac.bin"
+    echo "updates/ath12k/WCN7850/hw2.0/board-2.bin run/galaxyxr-firmware/ath12k/WCN7850/hw2.0/board-2.bin"
     names "$apnhlos/image" | while read -r name; do
         echo "$name run/platform/apnhlos/image/$name"
     done

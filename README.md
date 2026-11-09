@@ -13,10 +13,14 @@ Everything is mounted read-only, flat under `/run/platform`.
 - `galaxyxr-firmware` links every firmware file of apnhlos (`image/`) and
   vendor (`firmware/`) into `/usr/lib/firmware`, where the kernel and
   userspace such as pd-mapper look for it. `galaxyxr-firmware.service` makes
-  `wlan_mac.bin`, wlan's MAC address, from efs into `/run/galaxyxr-firmware`,
-  where its link points. Mainline kernels ask for the ADSP and CDSP firmware
-  as `qcom/halliday/samsung/xrvst2/adsp.mbn` and `cdsp.mbn`: these link to
-  the split `.mdt`, next to links to its `.bNN` segments.
+  two files with efs's MAC address into `/run/galaxyxr-firmware`, where their
+  links point: `wlan_mac.bin` for the 5.10 kernel's wlan, and mainline's
+  ath12k `board-2.bin`, which `bdf_mac` from galaxyxr-mini-tools makes from
+  vendor's board data and regdb. That one links from
+  `updates/ath12k/WCN7850/hw2.0`, ahead of linux-firmware's. Mainline kernels
+  ask for the ADSP and CDSP firmware as `qcom/halliday/samsung/xrvst2/adsp.mbn`
+  and `cdsp.mbn`: these link to the split `.mdt`, next to links to its `.bNN`
+  segments.
 
 ## Before any module loads
 
@@ -28,15 +32,15 @@ stage) start. They find the partitions in sysfs, because `/dev/disk` doesn't
 exist yet. The `run-platform-*.mount` units describe the same mounts to
 systemd. Other units can depend on them with `RequiresMountsFor=`.
 
-`galaxyxr-firmware.service` makes `wlan_mac.bin` after efs is mounted and
-before those start too.
+`galaxyxr-firmware.service` makes its files after efs and vendor are mounted
+and before those start too.
 
 A driver built into the kernel, or loaded by an initramfs, still needs its
 firmware in the kernel or in the initramfs. None of this happens in an
-initramfs: whoever wants Wi-Fi there needs `wlan_mac.bin` there, embedded when
-the image is built or made by the initramfs itself. To embed a file, copy its
-link's target: in an initramfs `/run` is a fresh tmpfs, so a copied link
-dangles.
+initramfs: whoever wants Wi-Fi there needs `wlan_mac.bin` or `board-2.bin`
+there, embedded when the image is built or made by the initramfs itself. To
+embed a file, copy its link's target: in an initramfs `/run` is a fresh tmpfs,
+so a copied link dangles.
 
 ## The firmware links
 
@@ -47,8 +51,9 @@ dangles.
 Without arguments it reads `/run/platform/apnhlos` and `/run/platform/vendor`;
 two arguments name other mount points of the same partitions. apnhlos wins
 a name both partitions have, as in Android. Links of vendor's that lead out
-of it, into `/data` or persist, are left out. `wlan_mac.bin` always links
-into `/run/galaxyxr-firmware`.
+of it, into `/data` or persist, are left out. `wlan_mac.bin` and
+`updates/ath12k/WCN7850/hw2.0/board-2.bin` always link into
+`/run/galaxyxr-firmware`.
 
 Files no driver requests on a retail unit (REV07 and later) are left out too:
 firmware of other chips, test images and prototype boards' files.

@@ -23,7 +23,8 @@ Description: Galaxy XR vendor partition on /run/platform
 
 Package: galaxyxr-firmware
 Architecture: all
-Depends: galaxyxr-base-partitions, galaxyxr-base-partitions-vendor, ${misc:Depends}
+Depends: galaxyxr-base-partitions, galaxyxr-base-partitions-vendor, galaxyxr-mini-tools (>= 2~),
+ ${misc:Depends}
 Description: Galaxy XR firmware, linked into its partitions
- Links apnhlos's and vendor's firmware into /usr/lib/firmware and makes
- wlan_mac.bin from efs.
+ Links apnhlos's and vendor's firmware into /usr/lib/firmware, and makes
+ wlan_mac.bin and ath12k's board-2.bin with efs's MAC address.
