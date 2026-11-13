@@ -1,5 +1,5 @@
 [Unit]
-Description=Galaxy XR firmware made from its partitions: wlan_mac.bin and ath12k's board-2.bin
+Description=Galaxy XR firmware made from its partitions: wlan_mac.bin, ath12k's board-2.bin and the Bluetooth NVM
 Documentation=file:///usr/share/doc/galaxyxr-firmware/README.md
 DefaultDependencies=no
 Conflicts=shutdown.target
@@ -19,6 +19,7 @@ TimeoutStartSec=30s
 TimeoutStopSec=5s
 ExecStart=/usr/libexec/galaxyxr-firmware/wlan-mac
 ExecStart=/usr/libexec/galaxyxr-firmware/board-2
+ExecStart=/usr/libexec/galaxyxr-firmware/bt-nvm
 
 [Install]
 WantedBy=sysinit.target

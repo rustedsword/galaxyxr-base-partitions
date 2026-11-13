@@ -1,3 +1,14 @@
+galaxyxr-base-partitions (6~26.10.1) stonking; urgency=medium
+
+  * galaxyxr-firmware links the Bluetooth firmware where mainline kernels
+    ask for it, from /usr/lib/firmware/updates/qca, ahead of
+    linux-firmware's rampatch: vendor's hmtbtfw20.tlv, and hmtnv20.b21,
+    which galaxyxr-firmware.service makes with bt_nvm from
+    galaxyxr-mini-tools: vendor's NVM with its bt_nvm_loading.xml applied
+    and efs's Bluetooth address, as Android downloads it.
+
+ -- Stanislav Aleksandrov <lightofmysoul@gmail.com>  Fri, 13 Nov 2026 10:16:59 +0000
+
 galaxyxr-base-partitions (5~26.10.1) stonking; urgency=medium
 
   * galaxyxr-firmware links the GPU firmware where mainline kernels ask for

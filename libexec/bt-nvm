@@ -1,0 +1,12 @@
+#!/bin/sh
+# Makes mainline's Bluetooth NVM: vendor's hmtnv20.b21 with its bt_nvm_loading.xml applied
+# and efs's Bluetooth address
+set -e
+
+firmware=${1:-/run/platform/vendor/firmware}
+address=${2:-/run/platform/efs/bluetooth/bt_addr}
+output=${3:-/run/galaxyxr-firmware/qca/hmtnv20.b21}
+
+mkdir -p "$(dirname -- "$output")"
+bt_nvm "$firmware/hmtnv20.b21" "$firmware/bt_nvm_loading.xml" "$address" "$output.tmp"
+mv -f "$output.tmp" "$output"

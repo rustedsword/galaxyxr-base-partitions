@@ -13,17 +13,23 @@ Everything is mounted read-only, flat under `/run/platform`.
 - `galaxyxr-firmware` links every firmware file of apnhlos (`image/`) and
   vendor (`firmware/`) into `/usr/lib/firmware`, where the kernel and
   userspace such as pd-mapper look for it. `galaxyxr-firmware.service` makes
-  two files with efs's MAC address into `/run/galaxyxr-firmware`, where their
-  links point: `wlan_mac.bin` for the 5.10 kernel's wlan, and mainline's
-  ath12k `board-2.bin`, which `bdf_mac` from galaxyxr-mini-tools makes from
-  vendor's board data and regdb. That one links from
-  `updates/ath12k/WCN7850/hw2.0`, ahead of linux-firmware's. Mainline kernels
+  three files into `/run/galaxyxr-firmware`, where their links point. Two
+  have efs's Wi-Fi MAC address: `wlan_mac.bin` for the 5.10 kernel's wlan, and
+  mainline's ath12k `board-2.bin`, which `bdf_mac` from galaxyxr-mini-tools
+  makes from vendor's board data and regdb. That one links from
+  `updates/ath12k/WCN7850/hw2.0`, ahead of linux-firmware's. The third is
+  mainline's Bluetooth NVM, below. Mainline kernels
   ask for the ADSP and CDSP firmware as `qcom/halliday/samsung/xrvst2/adsp.mbn`
   and `cdsp.mbn`: these link to the split `.mdt`, next to links to its `.bNN`
   segments. The GPU's zap shader links there too, as `a740v3_zap.mbn`.
   Mainline's GPU driver asks for `qcom/a740v3_sqe.fw` and
   `qcom/gmu_gen70200.bin`: these link from `updates/qcom`, ahead of
-  linux-firmware's GMU, which is another build than vendor's.
+  linux-firmware's GMU, which is another build than vendor's. Mainline's
+  Bluetooth driver asks for `qca/hmtbtfw20.tlv` and `qca/hmtnv20.b21`: these
+  link from `updates/qca`, ahead of linux-firmware's rampatch, which is
+  another build too. The rampatch is vendor's file. The NVM is vendor's with
+  its `bt_nvm_loading.xml` applied and efs's Bluetooth address, as Android
+  downloads it: `bt_nvm` from galaxyxr-mini-tools makes it.
 
 ## Before any module loads
 
@@ -54,9 +60,9 @@ so a copied link dangles.
 Without arguments it reads `/run/platform/apnhlos` and `/run/platform/vendor`;
 two arguments name other mount points of the same partitions. apnhlos wins
 a name both partitions have, as in Android. Links of vendor's that lead out
-of it, into `/data` or persist, are left out. `wlan_mac.bin` and
-`updates/ath12k/WCN7850/hw2.0/board-2.bin` always link into
-`/run/galaxyxr-firmware`.
+of it, into `/data` or persist, are left out. `wlan_mac.bin`,
+`updates/ath12k/WCN7850/hw2.0/board-2.bin` and `updates/qca/hmtnv20.b21`
+always link into `/run/galaxyxr-firmware`.
 
 Files no driver requests on a retail unit (REV07 and later) are left out too:
 firmware of other chips, test images and prototype boards' files.

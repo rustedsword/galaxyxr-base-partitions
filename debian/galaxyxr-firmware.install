@@ -1,3 +1,4 @@
 libexec/board-2 usr/libexec/galaxyxr-firmware
+libexec/bt-nvm usr/libexec/galaxyxr-firmware
 libexec/wlan-mac usr/libexec/galaxyxr-firmware
 systemd/galaxyxr-firmware.service usr/lib/systemd/system

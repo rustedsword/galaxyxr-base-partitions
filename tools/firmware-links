@@ -3,9 +3,9 @@
 # vendor's firmware/, a link of the same name in /usr/lib/firmware into /run/platform.
 # apnhlos wins a name both have, as in Android. Vendor's absolute links are followed into
 # /run/platform/vendor; those that leave vendor (for /data or persist, which Android fills)
-# are left out. wlan_mac.bin and ath12k's board-2.bin, which galaxyxr-firmware.service makes at
-# boot, link into /run/galaxyxr-firmware instead; board-2.bin from updates/, ahead of
-# linux-firmware's. Files no driver requests on a retail unit (REV07 and later) are left out
+# are left out. wlan_mac.bin, ath12k's board-2.bin and the Bluetooth NVM, which
+# galaxyxr-firmware.service makes at boot, link into /run/galaxyxr-firmware instead; board-2.bin
+# from updates/, ahead of linux-firmware's. Files no driver requests on a retail unit (REV07 and later) are left out
 # too: firmware of other chips, test images and prototype boards' files.
 # Mainline kernels ask for the ADSP and CDSP firmware as qcom/halliday/samsung/xrvst2/
 # adsp.mbn and cdsp.mbn: these link to the split .mdt, and the .bNN segments, which the
@@ -13,6 +13,9 @@
 # The GPU's zap shader links there as well, a740v3_zap.mbn, which is one whole image.
 # Mainline's GPU driver asks for qcom/a740v3_sqe.fw and qcom/gmu_gen70200.bin: these link
 # from updates/qcom, ahead of linux-firmware's GMU, which is another build than vendor's.
+# Mainline's Bluetooth driver asks for qca/hmtbtfw20.tlv and qca/hmtnv20.b21: these link
+# from updates/qca, ahead of linux-firmware's rampatch, which is another build too. The
+# rampatch is vendor's file; the NVM is vendor's with its bt_nvm_loading.xml applied.
 #
 #   tools/firmware-links [APNHLOS VENDOR] > debian/galaxyxr-firmware.links
 #
@@ -49,6 +52,7 @@ echo "# Made by tools/firmware-links from ${fingerprint:-an unknown vendor}"
 {
     echo "wlan/qca_cld/kiwi_v2/wlan_mac.bin run/galaxyxr-firmware/wlan/qca_cld/kiwi_v2/wlan_mac.bin"
     echo "updates/ath12k/WCN7850/hw2.0/board-2.bin run/galaxyxr-firmware/ath12k/WCN7850/hw2.0/board-2.bin"
+    echo "updates/qca/hmtnv20.b21 run/galaxyxr-firmware/qca/hmtnv20.b21"
     names "$apnhlos/image" | while read -r name; do
         echo "$name run/platform/apnhlos/image/$name"
     done
@@ -66,6 +70,9 @@ echo "# Made by tools/firmware-links from ${fingerprint:-an unknown vendor}"
         [ -f "$vendor/firmware/$gpu" ] || continue
         echo "updates/qcom/$gpu run/platform/vendor/firmware/$gpu"
     done
+    if [ -f "$vendor/firmware/hmtbtfw20.tlv" ]; then
+        echo "updates/qca/hmtbtfw20.tlv run/platform/vendor/firmware/hmtbtfw20.tlv"
+    fi
     names "$vendor/firmware" | while read -r name; do
         target=run/platform/vendor/firmware/$name
         if [ -L "$vendor/firmware/$name" ]; then
