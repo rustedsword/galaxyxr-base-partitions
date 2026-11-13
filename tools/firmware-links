@@ -16,6 +16,9 @@
 # Mainline's Bluetooth driver asks for qca/hmtbtfw20.tlv and qca/hmtnv20.b21: these link
 # from updates/qca, ahead of linux-firmware's rampatch, which is another build too. The
 # rampatch is vendor's file; the NVM is vendor's with its bt_nvm_loading.xml applied.
+# Mainline's cs35l45 driver asks for the speaker amplifiers' protection firmware as
+# cirrus/cs35l45-dsp1-spk-prot-samsung-xrvst2.wmfw and, per amplifier, its tuning with the
+# amplifier's name after it: vendor's wf files for the woofers and tw for the tweeters.
 #
 #   tools/firmware-links [APNHLOS VENDOR] > debian/galaxyxr-firmware.links
 #
@@ -72,6 +75,13 @@ echo "# Made by tools/firmware-links from ${fingerprint:-an unknown vendor}"
     done
     if [ -f "$vendor/firmware/hmtbtfw20.tlv" ]; then
         echo "updates/qca/hmtbtfw20.tlv run/platform/vendor/firmware/hmtbtfw20.tlv"
+    fi
+    if [ -f "$vendor/firmware/cs35l45-wf-dsp1-spk-prot.wmfw" ]; then
+        amp=cirrus/cs35l45-dsp1-spk-prot-samsung-xrvst2
+        echo "$amp.wmfw run/platform/vendor/firmware/cs35l45-wf-dsp1-spk-prot.wmfw"
+        for speaker in wooferl:wf wooferr:wf tweeterl:tw tweeterr:tw; do
+            echo "$amp-${speaker%:*}.bin run/platform/vendor/firmware/cs35l45-${speaker#*:}-dsp1-spk-prot.bin"
+        done
     fi
     names "$vendor/firmware" | while read -r name; do
         target=run/platform/vendor/firmware/$name

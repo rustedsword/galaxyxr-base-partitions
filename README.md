@@ -29,7 +29,12 @@ Everything is mounted read-only, flat under `/run/platform`.
   link from `updates/qca`, ahead of linux-firmware's rampatch, which is
   another build too. The rampatch is vendor's file. The NVM is vendor's with
   its `bt_nvm_loading.xml` applied and efs's Bluetooth address, as Android
-  downloads it: `bt_nvm` from galaxyxr-mini-tools makes it.
+  downloads it: `bt_nvm` from galaxyxr-mini-tools makes it. Mainline's
+  cs35l45 driver asks for the speaker amplifiers' protection firmware as
+  `cirrus/cs35l45-dsp1-spk-prot-samsung-xrvst2.wmfw` and for each
+  amplifier's tuning under the same name with `-wooferl`, `-wooferr`,
+  `-tweeterl` or `-tweeterr` and `.bin`: these link to vendor's `wf` files
+  for the woofers and `tw` files for the tweeters.
 
 ## Before any module loads
 

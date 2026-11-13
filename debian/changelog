@@ -1,3 +1,12 @@
+galaxyxr-base-partitions (7~26.10.1) stonking; urgency=medium
+
+  * galaxyxr-firmware links the speaker amplifiers' protection firmware
+    where mainline kernels ask for it, in /usr/lib/firmware/cirrus:
+    vendor's cs35l45 firmware, its wf tuning for the two woofers and its tw
+    tuning for the two tweeters.
+
+ -- Stanislav Aleksandrov <lightofmysoul@gmail.com>  Fri, 13 Nov 2026 16:00:00 +0000
+
 galaxyxr-base-partitions (6~26.10.1) stonking; urgency=medium
 
   * galaxyxr-firmware links the Bluetooth firmware where mainline kernels
