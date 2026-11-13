@@ -10,6 +10,9 @@
 # Mainline kernels ask for the ADSP and CDSP firmware as qcom/halliday/samsung/xrvst2/
 # adsp.mbn and cdsp.mbn: these link to the split .mdt, and the .bNN segments, which the
 # kernel loads by name from the same directory, get links there too.
+# The GPU's zap shader links there as well, a740v3_zap.mbn, which is one whole image.
+# Mainline's GPU driver asks for qcom/a740v3_sqe.fw and qcom/gmu_gen70200.bin: these link
+# from updates/qcom, ahead of linux-firmware's GMU, which is another build than vendor's.
 #
 #   tools/firmware-links [APNHLOS VENDOR] > debian/galaxyxr-firmware.links
 #
@@ -55,6 +58,13 @@ echo "# Made by tools/firmware-links from ${fingerprint:-an unknown vendor}"
         names "$apnhlos/image" | grep "^$dsp\.b[0-9][0-9]\$" | while read -r name; do
             echo "qcom/halliday/samsung/xrvst2/$name run/platform/apnhlos/image/$name"
         done
+    done
+    if [ -f "$apnhlos/image/a740v3_zap.mbn" ]; then
+        echo "qcom/halliday/samsung/xrvst2/a740v3_zap.mbn run/platform/apnhlos/image/a740v3_zap.mbn"
+    fi
+    for gpu in a740v3_sqe.fw gmu_gen70200.bin; do
+        [ -f "$vendor/firmware/$gpu" ] || continue
+        echo "updates/qcom/$gpu run/platform/vendor/firmware/$gpu"
     done
     names "$vendor/firmware" | while read -r name; do
         target=run/platform/vendor/firmware/$name

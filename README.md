@@ -20,7 +20,10 @@ Everything is mounted read-only, flat under `/run/platform`.
   `updates/ath12k/WCN7850/hw2.0`, ahead of linux-firmware's. Mainline kernels
   ask for the ADSP and CDSP firmware as `qcom/halliday/samsung/xrvst2/adsp.mbn`
   and `cdsp.mbn`: these link to the split `.mdt`, next to links to its `.bNN`
-  segments.
+  segments. The GPU's zap shader links there too, as `a740v3_zap.mbn`.
+  Mainline's GPU driver asks for `qcom/a740v3_sqe.fw` and
+  `qcom/gmu_gen70200.bin`: these link from `updates/qcom`, ahead of
+  linux-firmware's GMU, which is another build than vendor's.
 
 ## Before any module loads
 

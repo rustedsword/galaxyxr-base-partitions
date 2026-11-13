@@ -196,6 +196,7 @@ run/platform/apnhlos/image/prov.b06 usr/lib/firmware/prov.b06
 run/platform/apnhlos/image/prov.b07 usr/lib/firmware/prov.b07
 run/platform/apnhlos/image/prov.b08 usr/lib/firmware/prov.b08
 run/platform/apnhlos/image/prov.mdt usr/lib/firmware/prov.mdt
+run/platform/apnhlos/image/a740v3_zap.mbn usr/lib/firmware/qcom/halliday/samsung/xrvst2/a740v3_zap.mbn
 run/platform/apnhlos/image/adsp.b00 usr/lib/firmware/qcom/halliday/samsung/xrvst2/adsp.b00
 run/platform/apnhlos/image/adsp.b01 usr/lib/firmware/qcom/halliday/samsung/xrvst2/adsp.b01
 run/platform/apnhlos/image/adsp.b02 usr/lib/firmware/qcom/halliday/samsung/xrvst2/adsp.b02
@@ -317,6 +318,8 @@ run/platform/apnhlos/image/sshdcpapp.b08 usr/lib/firmware/sshdcpapp.b08
 run/platform/apnhlos/image/sshdcpapp.mdt usr/lib/firmware/sshdcpapp.mdt
 run/platform/vendor/firmware/touchkey_abov/abov_tk_moohan.bin usr/lib/firmware/touchkey_abov/abov_tk_moohan.bin
 run/galaxyxr-firmware/ath12k/WCN7850/hw2.0/board-2.bin usr/lib/firmware/updates/ath12k/WCN7850/hw2.0/board-2.bin
+run/platform/vendor/firmware/a740v3_sqe.fw usr/lib/firmware/updates/qcom/a740v3_sqe.fw
+run/platform/vendor/firmware/gmu_gen70200.bin usr/lib/firmware/updates/qcom/gmu_gen70200.bin
 run/platform/vendor/firmware/vpu33_4v.mbn usr/lib/firmware/vpu33_4v.mbn
 run/platform/apnhlos/image/widevine.mbn usr/lib/firmware/widevine.mbn
 run/platform/vendor/firmware/wlan-connection-roaming-backup.ini usr/lib/firmware/wlan-connection-roaming-backup.ini

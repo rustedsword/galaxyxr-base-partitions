@@ -1,3 +1,12 @@
+galaxyxr-base-partitions (5~26.10.1) stonking; urgency=medium
+
+  * galaxyxr-firmware links the GPU firmware where mainline kernels ask for
+    it: the zap shader as qcom/halliday/samsung/xrvst2/a740v3_zap.mbn, and
+    vendor's a740v3_sqe.fw and gmu_gen70200.bin from
+    /usr/lib/firmware/updates/qcom, ahead of linux-firmware's.
+
+ -- Stanislav Aleksandrov <lightofmysoul@gmail.com>  Fri, 13 Nov 2026 00:07:05 +0000
+
 galaxyxr-base-partitions (4~26.10.1) stonking; urgency=medium
 
   * galaxyxr-firmware makes mainline's ath12k board-2.bin for the WCN7850
